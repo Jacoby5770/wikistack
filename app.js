@@ -1,12 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const layout = require("./views/layout");
+const { addPage, editPage, main, userList, userPages, wikiPage } = require("./views");
 const models = require('./models');
 const app = express();
 const wikiRouter = require('./routes/wiki')
 const userRouter = require('./routes/user')
 
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 app.use(morgan("dev"));
 app.use(express.static(__dirname + "/public"));
 
@@ -14,7 +16,7 @@ app.use('/wiki', wikiRouter)
 app.use('/user', userRouter)
 
 app.get("/", (req, res, next) => {
-	res.send(layout(""));
+	res.redirect('/wiki');
 });
 
 const PORT = 3000;
